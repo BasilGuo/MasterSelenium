@@ -34,6 +34,8 @@ public enum DriverType implements DriverSetup{
       FirefoxOptions options = new FirefoxOptions();
       options.setBinary(ffBinaryPath);
       options.merge(capabilities);
+      // 后台模式
+      options.setHeadless(HEADLESS);
       return new FirefoxDriver(options);
     }
   },
@@ -45,6 +47,8 @@ public enum DriverType implements DriverSetup{
       chromePreferences.put("profile.password_manager_enabled", false);
       ChromeOptions options = new ChromeOptions();
       options.merge(capabilities);
+      // 后台模式
+      options.setHeadless(HEADLESS);
       // 禁用每次询问设为默认浏览器
       options.addArguments("--no-default-browser-check");
       options.setExperimentalOption("prefs", chromePreferences);
@@ -88,8 +92,7 @@ public enum DriverType implements DriverSetup{
       options.merge(capabilities);
       return new OperaDriver(options);
     }
-  }
+  };
 
-
-
+  public final static boolean HEADLESS = Boolean.getBoolean("headless");
 }

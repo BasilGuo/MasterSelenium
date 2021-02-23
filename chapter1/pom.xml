@@ -21,6 +21,8 @@
             如果我们一定要下载新的文件版本或刷新现有的文件，
             它为我们提供了另一个选择，可以让插件强制覆盖现有文件。 -->
         <overwrite.binaries>false</overwrite.binaries>
+        <!-- 无头模式: 后台模式 -->
+        <headless>true</headless>
         <!-- Plugin versions -->
         <driver-binary-downloader-maven-plugin.version>1.0.17</driver-binary-downloader-maven-plugin.version>
     </properties>
@@ -36,6 +38,8 @@
                     <threadCount>${threads}</threadCount>
                     <systemPropertyVariables>
                         <browser>${browser}</browser>
+                        <!-- 后台模式 -->
+                        <headless>${headless}</headless>
                         <!-- Set properties passed in by the driver binary downloader -->
                         <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
                         <webdriver.ie.driver>${webdriver.ie.driver}</webdriver.ie.driver>
