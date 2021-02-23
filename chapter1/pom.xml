@@ -14,7 +14,15 @@
     <packaging>jar</packaging>
 
     <properties>
+        <!-- Configurable variables -->
         <browser>firefox</browser>
+        <!--
+            默认情况下，它不会覆盖已存在的文件。
+            如果我们一定要下载新的文件版本或刷新现有的文件，
+            它为我们提供了另一个选择，可以让插件强制覆盖现有文件。 -->
+        <overwrite.binaries>false</overwrite.binaries>
+        <!-- Plugin versions -->
+        <driver-binary-downloader-maven-plugin.version>1.0.17</driver-binary-downloader-maven-plugin.version>
     </properties>
 
     <build>
@@ -28,6 +36,12 @@
                     <threadCount>${threads}</threadCount>
                     <systemPropertyVariables>
                         <browser>${browser}</browser>
+                        <!-- Set properties passed in by the driver binary downloader -->
+                        <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+                        <webdriver.ie.driver>${webdriver.ie.driver}</webdriver.ie.driver>
+                        <webdriver.opera.driver>${webdriver.opera.driver}</webdriver.opera.driver>
+                        <webdriver.gecko.driver>${webdriver.gecko.driver}</webdriver.gecko.driver>
+                        <webdriver.edge.driver>${webdriver.edge.driver}</webdriver.edge.driver>
                     </systemPropertyVariables>
                 </configuration>
                 <executions>
@@ -39,6 +53,34 @@
                                 如果某些内容未通过则无法进行构建。如果没有设置verify的goal节点，
                                 则构建不会失败。-->
                             <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.lazerycode.selenium</groupId>
+                <artifactId>driver-binary-downloader-maven-plugin</artifactId>
+                <version>${driver-binary-downloader-maven-plugin.version}</version>
+                <configuration>
+                    <!-- 指定将驱动程序二进制文件解压到何处 -->
+                    <rootStandaloneServerDirectory>
+                        ${project.basedir}/src/test/resources/selenium_standalone_binaries
+                    </rootStandaloneServerDirectory>
+                    <!-- 指定将驱动程序二进制文件的Zip包下载到何处 -->
+                    <downloadedZipFileDirectory>
+                        ${project.basedir}/src/test/resources/selenium_standalone_zips
+                    </downloadedZipFileDirectory>
+                    <!-- 令其指向customRepositoryMap.xml文件。
+                        customRepositoryMap.xml文件用于存放所有驱动程序二进制文件的下载路径 -->
+                    <customRepositoryMap>
+                        ${project.basedir}/src/test/resources/RepositoryMap.xml
+                    </customRepositoryMap>
+                    <overwriteFilesThatExist>${overwrite.binaries}</overwriteFilesThatExist>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>selenium</goal>
                         </goals>
                     </execution>
                 </executions>
