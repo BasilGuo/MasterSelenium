@@ -1,0 +1,6 @@
+# Project exclude paths
+/chapter1/target/
+*.iml
+.idea
+.gitignore
+
